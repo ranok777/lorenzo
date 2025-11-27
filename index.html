@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model Scroll Rotation</title>
+    
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0d0d0d; /* 95% черный */
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; 
+            font-family: sans-serif;
+        }
+
+        model-viewer {
+            width: 100%;
+            height: 80vh;
+            --poster-color: transparent;
+            /* Убираем синюю рамку фокуса при клике */
+            outline: none; 
+        }
+
+        .instruction {
+            color: #ffffff;
+            opacity: 0.7;
+            margin-top: 10px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            pointer-events: none;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+
+    <model-viewer 
+        id="myModel" 
+        src="logoE_scroll.glb" 
+        alt="3D Logo" 
+        autoplay 
+        camera-controls 
+        disable-zoom 
+        interaction-prompt="none"
+        shadow-intensity="1"
+        orientation="0deg 0deg 0deg">
+    </model-viewer>
+
+    <div class="instruction">Scroll to rotate me</div>
+
+    <script>
+        const modelViewer = document.querySelector('#myModel');
+        let zRotation = 0; 
+        
+        // Уменьшил скорость с 0.5 до 0.05
+        // Если все еще быстро, попробуйте 0.01
+        // Если медленно, попробуйте 0.1
+        const speed = 0.05; 
+
+        window.addEventListener('wheel', (event) => {
+            // Направление скролла * скорость
+            zRotation += event.deltaY * speed;
+
+            // Применяем вращение по Z (третье значение)
+            modelViewer.orientation = `0deg 0deg ${zRotation}deg`;
+        });
+    </script>
+
+</body>
+</html>
